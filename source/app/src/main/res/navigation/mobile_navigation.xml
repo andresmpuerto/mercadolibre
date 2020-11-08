@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.andrempuerto.meli.ui.gallery.GalleryFragment"
+        android:name="com.andrempuerto.meli.ui.product.search.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.andrempuerto.meli.ui.slideshow.SlideshowFragment"
+        android:name="com.andrempuerto.meli.ui.recentsearch.RecentSearchFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

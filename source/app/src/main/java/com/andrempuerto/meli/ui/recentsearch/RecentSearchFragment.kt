@@ -1,4 +1,4 @@
-package com.andrempuerto.meli.ui.slideshow
+package com.andrempuerto.meli.ui.recentsearch
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.andrempuerto.meli.R
 
-class SlideshowFragment : Fragment() {
+class RecentSearchFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var recentSearchViewModel: RecentSearchViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-                ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        recentSearchViewModel =
+                ViewModelProvider(this).get(RecentSearchViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
+        recentSearchViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
