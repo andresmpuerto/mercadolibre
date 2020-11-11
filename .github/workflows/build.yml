@@ -19,10 +19,10 @@ jobs:
           java-version: 1.8
 
       - name: Make gradlew exec
-        run: chmod +x ./gradlew
+        run: chmod +x ./source/gradlew
 
       - name: Run Tests
-        run: bash ./gradlew test
+        run: bash ./source/gradlew test
 
       - name: Build Project Android
-        run: bash ./gradlew assemble
+        run: bash ./source/gradlew assemble
