@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - develop
+      
+defaults:
+  run:
+    working-directory: source
 
 jobs:
   build:
@@ -19,10 +23,10 @@ jobs:
           java-version: 1.8
 
       - name: Make gradlew exec
-        run: chmod +x ./source/gradlew
+        run: chmod +x ./gradlew
 
       - name: Run Tests
-        run: bash ./source/gradlew test
+        run: bash ./gradlew test
 
       - name: Build Project Android
-        run: bash ./source/gradlew assemble
+        run: bash ./gradlew assemble
