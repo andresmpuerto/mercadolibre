@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_title_dark_mode">Desactivar Modo Oscuro</string>
+    <string name="text_summary_dark_mode">Desactiva el modo oscuro para tu app.</string>
+</resources>
