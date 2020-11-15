@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="isEmpty"
             type="Boolean" />
+
+        <variable
+            name="adapterList"
+            type="com.andrempuerto.meli.ui.product.search.ProductsAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,22 +35,21 @@
             android:id="@+id/rvProducts"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_md"
             android:layout_marginHorizontal="@dimen/margin_md"
+            android:layout_marginTop="@dimen/margin_md"
+            setAdapter="@{adapterList}"
             app:isVisible="@{safeUnbox(!isEmpty)}"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/list_item_product"
-            app:layout_constraintTop_toBottomOf="@id/svProduct" />
+            app:layout_constraintTop_toBottomOf="@id/svProduct"
+            tools:listitem="@layout/list_item_product" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:isVisible="@{safeUnbox(isEmpty)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

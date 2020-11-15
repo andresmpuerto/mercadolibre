@@ -15,4 +15,5 @@
     <string name="select_country">Selecciona tú país</string>
     <string name="text_country_colombia">COLOMBIA</string>
     <string name="text_country_argentina">ARGENTINA</string>
+    <string name="text_recent_queries">Consultas recientes</string>
 </resources>
