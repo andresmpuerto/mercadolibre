@@ -1,33 +1,24 @@
 package com.andrempuerto.meli.ui.product.detail
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.andrempuerto.meli.R
+import androidx.fragment.app.viewModels
+import com.andrempuerto.meli.databinding.FragmentDetailProductBinding
+import com.andrempuerto.meli.ui.BaseFragment
 import com.andrempuerto.meli.ui.product.ProductViewModel
 
-class DetailProductFragment : Fragment() {
+class DetailProductFragment : BaseFragment<FragmentDetailProductBinding>() {
 
-    companion object {
-        fun newInstance() = DetailProductFragment()
-    }
+    private val viewModel by viewModels<ProductViewModel>()
 
-    private lateinit var viewModel: ProductViewModel
+    override fun getViewDataBinding(inflater: LayoutInflater):
+            FragmentDetailProductBinding = FragmentDetailProductBinding.inflate(inflater)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_detail_product, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.product = viewModel.product
     }
 
 }
