@@ -11,7 +11,7 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_nav_home_to_view_list_products"
+            android:id="@+id/action_to_list_products"
             app:destination="@id/view_list_products" />
     </fragment>
 
@@ -22,14 +22,23 @@
 
     <fragment
         android:id="@+id/view_list_products"
-        android:name="com.andrempuerto.meli.ui."
+        android:name="com.andrempuerto.meli.ui.product.search.SearchProductFragment"
         tools:layout="@layout/fragment_search_product" >
         <action
             android:id="@+id/action_to_detail"
             app:destination="@id/view_detail_product" />
+        <action
+            android:id="@+id/action_to_recent"
+            app:destination="@id/view_recent" />
     </fragment>
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.andrempuerto.meli.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/view_recent"
+        android:name="com.andrempuerto.meli.ui.recentsearch.RecentSearchFragment"
+        android:label="RecentFragment"
+        tools:layout="@layout/fragment_recent_list"/>
 </navigation>

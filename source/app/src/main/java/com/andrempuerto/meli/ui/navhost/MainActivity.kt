@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,7 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.andrempuerto.meli.R
 import com.andrempuerto.meli.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -27,12 +30,34 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         setNavigation()
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            supportActionBar?.title = destination.label
+            when (destination.id) {
+                R.id.nav_home -> {
+                    supportActionBar?.apply{
+                        setDisplayShowHomeEnabled(false)
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
+
+                else -> {
+                    supportActionBar?.apply {
+                        setDisplayShowHomeEnabled(true)
+                        setDisplayHomeAsUpEnabled(true)
+                    }
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+            }
+        }
     }
 
     private fun setNavigation() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home
+                R.id.view_list_products,
+                R.id.nav_settings
             ), binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
