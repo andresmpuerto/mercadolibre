@@ -132,12 +132,12 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     //AndroidX - Paging Library
-    def pagingVersion = "3.0.0-alpha08"
+    def pagingVersion = "3.0.0-alpha09"
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
     testImplementation "androidx.paging:paging-common-ktx:$pagingVersion"
 
     //DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha02"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha03"
 
     //Glide
     def glideVersion = "4.11.0"
