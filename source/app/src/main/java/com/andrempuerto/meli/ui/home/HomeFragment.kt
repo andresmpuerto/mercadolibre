@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.andrempuerto.meli.R
 import com.andrempuerto.meli.databinding.FragmentHomeBinding
 import com.andrempuerto.meli.ui.BaseFragment
-import dagger.hilt.EntryPoint
+import com.andrempuerto.meli.utils.Logger
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener {
 
     private val homeViewModel: HomeViewModel by viewModels()
@@ -25,11 +28,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.cv_col -> {
-                //MCO
+                homeViewModel.saveSelectSiteId("MCO")
+                val action = HomeFragmentDirections.actionToListProducts()
+                findNavController().navigate(action)
             }
 
             R.id.cv_ar -> {
-                //MLA
+                homeViewModel.saveSelectSiteId("MLA")
+                val action = HomeFragmentDirections.actionToListProducts()
+                findNavController().navigate(action)
             }
         }
     }

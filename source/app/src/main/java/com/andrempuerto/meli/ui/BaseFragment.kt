@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.andrempuerto.meli.utils.Logger
 
 abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
 
@@ -20,6 +21,7 @@ abstract class BaseFragment<V: ViewDataBinding>: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Logger.setTag(this::class.java.simpleName)
         binding = getViewDataBinding(inflater)
         return binding.root
     }

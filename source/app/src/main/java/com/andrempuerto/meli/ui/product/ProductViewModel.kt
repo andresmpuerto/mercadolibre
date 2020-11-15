@@ -25,11 +25,7 @@ class ProductViewModel : ViewModel() {
     }
     val product: LiveData<Product> = _product
 
-    private val adapter: ProductsAdapter = ProductsAdapter(this)
-
-    fun getAdapter(): ProductsAdapter {
-        return adapter
-    }
+    val adapter: ProductsAdapter = ProductsAdapter(this)
 
     //---
     fun getProductsByQuery(query: String): LiveData<PagingData<Product>> {

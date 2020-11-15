@@ -20,11 +20,7 @@ class RecentSearchViewModel : ViewModel() {
     private val _item  = MutableLiveData<RecentQuery>()
     val item: LiveData<RecentQuery> = _item
 
-    private val adapter: RecentAdapter = RecentAdapter(this)
-
-    fun getAdapter(): RecentAdapter {
-        return adapter
-    }
+    val adapter: RecentAdapter = RecentAdapter(this)
 
     //---
     fun getLastQueries() { //: LiveData<PagingData<RecentQuery>> {

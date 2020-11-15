@@ -7,6 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
+@BindingAdapter("setAdapter")
+fun bindAdapter(recyclerView: RecyclerView, adapter: PagingDataAdapter<*, *>) {
+    recyclerView.apply {
+        setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(recyclerView.context)
+        this.adapter = adapter
+    }
+}
+
 @BindingAdapter("isVisible")
 fun bindToggle(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) {
@@ -16,12 +25,3 @@ fun bindToggle(view: View, isVisible: Boolean) {
     }
 }
 
-
-@BindingAdapter("adapter")
-fun bindAdapter(recyclerView: RecyclerView, pagingAdapter: RecyclerView.Adapter<*>) {
-    recyclerView.apply {
-        setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(recyclerView.context)
-        adapter = pagingAdapter
-    }
-}
