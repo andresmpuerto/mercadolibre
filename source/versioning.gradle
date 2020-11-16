@@ -9,7 +9,10 @@ ext {
     }
 
     generateVersionNameSuffix = { sf ->
-        return "-${sf}${versionBuild}"
+        if (versionBuild < 10)
+            return "-${sf}0${versionBuild}"
+        else
+            return "-${sf}${versionBuild}"
     }
 
     //example 1000010 => 1.0.1

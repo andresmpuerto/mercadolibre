@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="product"
+            type="androidx.lifecycle.LiveData&lt;com.andrempuerto.meli.model.Product>" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -66,7 +72,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_atributes"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Atributos"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -126,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sm"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Localización"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -210,7 +216,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sm"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_payment"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Pago"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -294,7 +300,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sm"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_more"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Adicionales"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
