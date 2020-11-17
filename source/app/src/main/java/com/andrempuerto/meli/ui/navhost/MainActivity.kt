@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.andrempuerto.meli.BuildConfig
 import com.andrempuerto.meli.R
 import com.andrempuerto.meli.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setNavigation()
 
+        binding.version = BuildConfig.VERSION_NAME
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.title = destination.label
             when (destination.id) {
@@ -39,15 +42,15 @@ class MainActivity : AppCompatActivity() {
                         setDisplayShowHomeEnabled(false)
                         setDisplayHomeAsUpEnabled(false)
                     }
-                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
 
-                else -> {
+                R.id.view_list_products -> {
                     supportActionBar?.apply {
                         setDisplayShowHomeEnabled(true)
                         setDisplayHomeAsUpEnabled(true)
                     }
-                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 }
             }
         }
@@ -58,7 +61,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.view_list_products,
                 R.id.nav_settings
-            ), binding.drawerLayout
+            ),
+            binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)

@@ -5,12 +5,15 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.andrempuerto.meli.R
 import com.andrempuerto.meli.databinding.FragmentSearchProductBinding
 import com.andrempuerto.meli.ui.BaseFragment
 import com.andrempuerto.meli.ui.product.ProductViewModel
+import com.andrempuerto.meli.utils.Logger
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,23 +37,63 @@ class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
             }
         }
 
-//        productViewModel.getProductsByQuery("Hola").observe(viewLifecycleOwner) {
-//            productViewModel.setItems(it)
-//        }
-//
-//        productViewModel.product.observe(viewLifecycleOwner) {
-//            val action = SearchProductFragmentDirections.actionToDetail()
-//            findNavController().navigate(action)
-//        }
+        productViewModel.product.observe(viewLifecycleOwner) {
+            val action = SearchProductFragmentDirections.actionToDetail(it)
+            findNavController().navigate(action)
+        }
+
+        binding.retryButton.setOnClickListener {
+            productViewModel.adapter.retry()
+        }
+
+        statePagingAdapter()
+    }
+
+    private fun statePagingAdapter() {
+        productViewModel.adapter.addLoadStateListener { loadState ->
+            when(loadState.source.refresh ){
+                is LoadState.NotLoading -> {
+                    binding.rvProducts.isVisible = true
+                    binding.textError.isVisible = false
+                    binding.progressBar.isVisible = false
+                    binding.retryButton.isVisible = false
+                }
+
+                is LoadState.Loading -> {
+                    binding.progressBar.isVisible = true
+                    binding.rvProducts.isVisible = false
+                    binding.textError.isVisible = false
+                    binding.retryButton.isVisible = false
+                }
+
+                is LoadState.Error -> {
+                    binding.progressBar.isVisible = false
+                    binding.rvProducts.isVisible = false
+                    binding.textError.isVisible = true
+                    binding.retryButton.isVisible = true
+                    val errorState = loadState.source.append as? LoadState.Error
+                        ?: loadState.source.prepend as? LoadState.Error
+                        ?: loadState.append as? LoadState.Error
+                        ?: loadState.prepend as? LoadState.Error
+                    errorState?.let {
+                        binding.textError.text = it.error.message
+                    }
+                }
+            }
+        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        //TODO("Not yet implemented")
+        query?.let { q ->
+            hideKeyboard()
+            productViewModel.getProductsByQuery(q).observe(viewLifecycleOwner) {
+                productViewModel.setItems(it)
+            }
+        }
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        //TODO("Not yet implemented")
         return true
     }
 
@@ -68,5 +111,14 @@ class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Logger.e("OnDestroy")
+    }
+    override fun onDetach() {
+        super.onDetach()
+        Logger.e("onDetach")
     }
 }

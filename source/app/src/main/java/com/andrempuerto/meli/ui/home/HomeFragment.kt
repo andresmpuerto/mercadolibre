@@ -23,20 +23,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.onClickListener = this
+
+        homeViewModel.text.observe(viewLifecycleOwner){
+            val action = HomeFragmentDirections.actionToListProducts()
+            findNavController().navigate(action)
+        }
     }
 
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.cv_col -> {
                 homeViewModel.saveSelectSiteId("MCO")
-                val action = HomeFragmentDirections.actionToListProducts()
-                findNavController().navigate(action)
             }
 
             R.id.cv_ar -> {
                 homeViewModel.saveSelectSiteId("MLA")
-                val action = HomeFragmentDirections.actionToListProducts()
-                findNavController().navigate(action)
             }
         }
     }
