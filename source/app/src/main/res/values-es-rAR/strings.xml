@@ -16,4 +16,10 @@
     <string name="text_country_colombia">COLOMBIA</string>
     <string name="text_country_argentina">ARGENTINA</string>
     <string name="text_recent_queries">Consultas recientes</string>
+    <string name="text_yes_mp">SI</string>
+    <string name="text_no_mp">NO</string>
+    <string name="text_shipping_free">Envío Gratis</string>
+    <string name="text_format_mp_shipping_free">Mercado Pago: %1$s - %2$</string>
+    <string name="text_condition_new">Nuevo</string>
+    <string name="text_condition_used">Usado</string>
 </resources>

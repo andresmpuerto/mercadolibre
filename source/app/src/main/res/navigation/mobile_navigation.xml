@@ -18,7 +18,12 @@
     <fragment
         android:id="@+id/view_detail_product"
         android:name="com.andrempuerto.meli.ui.product.detail.DetailProductFragment"
-        tools:layout="@layout/fragment_detail_product" />
+        tools:layout="@layout/fragment_detail_product" >
+        <argument
+            android:name="product"
+            app:argType="com.andrempuerto.meli.model.Product"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/view_list_products"
