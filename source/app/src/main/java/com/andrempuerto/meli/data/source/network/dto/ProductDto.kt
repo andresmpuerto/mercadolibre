@@ -15,7 +15,7 @@ data class ProductDto(
     var permalink: String,
     var thumbnail: String,
     @SerializedName("accepts_mercadopago") var acceptsMp: Boolean,
-    var installments: InstallmentDto,
+    var installments: InstallmentDto?,
     var address: AddressDto,
     var shipping: ShippingDto,
     var attributes: List<AttributeDto>
@@ -33,7 +33,7 @@ fun List<ProductDto>.asProductModel(): List<Product> =
             permalink = it.permalink,
             thumbnail = it.thumbnail,
             acceptsMp = it.acceptsMp,
-            installments = it.installments.asInstallmentModel(),
+            installments = it.installments?.asInstallmentModel(),
             address = it.address.asAddressModel(),
             shipping = it.shipping.asShippingModel(),
             attributes = it.attributes.asListAttributeModel(),

@@ -8,18 +8,17 @@ import androidx.paging.liveData
 import com.andrempuerto.meli.data.ProductsPagingSource
 import com.andrempuerto.meli.data.source.network.Api
 import com.andrempuerto.meli.model.Product
-import com.andrempuerto.meli.utils.Logger
 import javax.inject.Inject
 
 class ProductsRepository @Inject constructor(private val api: Api){
 
-    fun getSearchProducts(query: String): LiveData<PagingData<Product>> {
+    fun getSearchProducts(query: String, siteId: String): LiveData<PagingData<Product>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = true
             ),
-            pagingSourceFactory = { ProductsPagingSource(api, query) }
+            pagingSourceFactory = { ProductsPagingSource(api, query, siteId) }
         ).liveData
     }
 
