@@ -3,6 +3,7 @@ package com.andrempuerto.meli.ui.product.search
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.andrempuerto.meli.databinding.ListItemProductBinding
+import com.andrempuerto.meli.model.Product
 import com.andrempuerto.meli.ui.product.ProductViewModel
 
 class ProductViewHolder(
@@ -10,12 +11,12 @@ class ProductViewHolder(
     private val binding: ListItemProductBinding
 ) : RecyclerView.ViewHolder(binding.root){
 
-    fun bind(position: Int) {
+    fun bind(mProduct:Product, position: Int) {
         binding.apply {
             onClickListener = View.OnClickListener {
-                viewModel.onItemClick(position)
+                viewModel.itemClick(position)
             }
-            product = viewModel.getItemAt(position)
+            product = mProduct
         }
     }
 }

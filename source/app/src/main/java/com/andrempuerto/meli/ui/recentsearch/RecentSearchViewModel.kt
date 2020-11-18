@@ -3,21 +3,16 @@ package com.andrempuerto.meli.ui.recentsearch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
-import com.andrempuerto.meli.model.Product
 import com.andrempuerto.meli.model.RecentQuery
-import com.andrempuerto.meli.ui.product.GithubPagingSource
 import kotlinx.coroutines.runBlocking
 
 class RecentSearchViewModel : ViewModel() {
 
-    private val _recent  = MutableLiveData<List<RecentQuery>>()
+    private val _recent = MutableLiveData<List<RecentQuery>>()
     val recent: LiveData<List<RecentQuery>> = _recent
 
-    private val _item  = MutableLiveData<RecentQuery>()
+    private val _item = MutableLiveData<RecentQuery>()
     val item: LiveData<RecentQuery> = _item
 
     val adapter: RecentAdapter = RecentAdapter(this)

@@ -10,24 +10,29 @@ import com.andrempuerto.meli.R
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
     private var preference: SwitchPreference? = null
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
-        preference = findPreference("dark_mode")
+        preference = findPreference(PREFERENCE_DARK_MODE)
         preference?.onPreferenceChangeListener = this
     }
 
     private fun updateTheme(nightMode: Int): Boolean {
         AppCompatDelegate.setDefaultNightMode(nightMode)
-        requireActivity().recreate()
         return true
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-        if (this.preference?.isChecked == true){
-            updateTheme(AppCompatDelegate.MODE_NIGHT_NO)
-        } else {
+        val mode = AppCompatDelegate.getDefaultNightMode()
+        if (newValue == true && mode == AppCompatDelegate.MODE_NIGHT_NO) {
             updateTheme(AppCompatDelegate.MODE_NIGHT_YES)
+        } else if (newValue == false && mode == AppCompatDelegate.MODE_NIGHT_YES) {
+            updateTheme(AppCompatDelegate.MODE_NIGHT_NO)
         }
         return true
+    }
+
+    companion object {
+        const val PREFERENCE_DARK_MODE = "dark_mode"
     }
 }

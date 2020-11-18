@@ -29,8 +29,11 @@ class ProductsAdapter(
 
     fun getItemByIndex(index: Int) = getItem(index)
 
+
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.bind(position)
+        getItemByIndex(position)?.let {
+            holder.bind(it, position)
+        }
     }
 
     companion object {
