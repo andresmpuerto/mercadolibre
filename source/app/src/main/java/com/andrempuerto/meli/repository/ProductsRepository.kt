@@ -16,7 +16,7 @@ class ProductsRepository @Inject constructor(private val api: Api){
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-                enablePlaceholders = true
+                enablePlaceholders = false
             ),
             pagingSourceFactory = { ProductsPagingSource(api, query, siteId) }
         ).liveData

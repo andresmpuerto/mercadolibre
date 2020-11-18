@@ -7,20 +7,27 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.andrempuerto.meli.R
 import com.andrempuerto.meli.databinding.FragmentSearchProductBinding
+import com.andrempuerto.meli.model.Product
 import com.andrempuerto.meli.ui.BaseFragment
 import com.andrempuerto.meli.ui.product.ProductViewModel
-import com.andrempuerto.meli.utils.Logger
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
     SearchView.OnQueryTextListener {
 
     private val productViewModel by viewModels<ProductViewModel>()
+
+    private lateinit var adapter: ProductsAdapter
 
     override fun getViewDataBinding(inflater: LayoutInflater) =
         FragmentSearchProductBinding.inflate(inflater)
@@ -29,29 +36,36 @@ class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
         super.onViewCreated(view, savedInstanceState)
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         setHasOptionsMenu(true)
+        adapter = ProductsAdapter(productViewModel)
         with(binding) {
-            adapterList = productViewModel.adapter
+            adapterList = adapter
             svProduct.apply {
                 setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
                 setOnQueryTextListener(this@SearchProductFragment)
             }
         }
 
-        productViewModel.product.observe(viewLifecycleOwner) {
-            val action = SearchProductFragmentDirections.actionToDetail(it)
-            findNavController().navigate(action)
+        productViewModel.products.observe(viewLifecycleOwner) {
+            setItems(it)
+        }
+
+        productViewModel.itemSelected.observe(viewLifecycleOwner) {
+            adapter.getItemByIndex(it)?.let { product ->
+                val action = SearchProductFragmentDirections.actionToDetail(product)
+                findNavController().navigate(action)
+            }
         }
 
         binding.retryButton.setOnClickListener {
-            productViewModel.adapter.retry()
+            adapter.retry()
         }
 
         statePagingAdapter()
     }
 
     private fun statePagingAdapter() {
-        productViewModel.adapter.addLoadStateListener { loadState ->
-            when(loadState.source.refresh ){
+        adapter.addLoadStateListener { loadState ->
+            when (loadState.source.refresh) {
                 is LoadState.NotLoading -> {
                     binding.rvProducts.isVisible = true
                     binding.textError.isVisible = false
@@ -83,12 +97,15 @@ class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
         }
     }
 
+    private fun setItems(items: PagingData<Product>) =
+        lifecycleScope.launch(Dispatchers.IO) {
+            adapter.submitData(items)
+        }
+
     override fun onQueryTextSubmit(query: String?): Boolean {
         query?.let { q ->
             hideKeyboard()
-            productViewModel.getProductsByQuery(q).observe(viewLifecycleOwner) {
-                productViewModel.setItems(it)
-            }
+            productViewModel.setQuery(q)
         }
         return true
     }
@@ -111,14 +128,5 @@ class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Logger.e("OnDestroy")
-    }
-    override fun onDetach() {
-        super.onDetach()
-        Logger.e("onDetach")
     }
 }

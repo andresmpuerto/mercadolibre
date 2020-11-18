@@ -12,6 +12,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrempuerto.meli.R
+import com.andrempuerto.meli.model.Installment
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
@@ -68,6 +69,15 @@ fun bindAvailable(view: MaterialTextView, availableQuantity: Int) {
     view.text = availableQuantity.toString()
 }
 
+@BindingAdapter("payments")
+fun bindPayments(view: MaterialTextView, installment: Installment?) {
+    if (installment != null) {
+        view.text = installment.quantity.toString()
+    } else {
+        view.text = view.context.getString(R.string.text_no_apply)
+    }
+}
+
 @BindingAdapter("currency", "amount")
 fun bindAmountProduct(view: MaterialTextView, currency: String, price: String) {
     when (currency) {
@@ -88,6 +98,60 @@ fun bindAmountProduct(view: MaterialTextView, currency: String, price: String) {
                 price.toDouble()
             )
         }
+    }
+}
+
+@BindingAdapter("currency", "pay")
+fun bindAmountToPay(view: MaterialTextView, currency: String, installment: Installment?) {
+    if (installment != null){
+        when (currency) {
+            CurrencyProduct.COP.value -> {
+                view.text = String.format(
+                    Locale.US,
+                    "%s $ %,.0f",
+                    currency,
+                    installment.amount
+                )
+            }
+
+            CurrencyProduct.ARS.value -> {
+                view.text = String.format(
+                    Locale.GERMANY,
+                    "%s $ %,.2f",
+                    currency,
+                    installment.amount
+                )
+            }
+        }
+    } else {
+        view.text = view.context.getString(R.string.text_no_apply)
+    }
+}
+
+@BindingAdapter("currency", "rate")
+fun bindAmountRate(view: MaterialTextView, currency: String, installment: Installment?) {
+    if (installment != null){
+        when (currency) {
+            CurrencyProduct.COP.value -> {
+                view.text = String.format(
+                    Locale.US,
+                    "%s $ %,.0f",
+                    currency,
+                    installment.rate
+                )
+            }
+
+            CurrencyProduct.ARS.value -> {
+                view.text = String.format(
+                    Locale.GERMANY,
+                    "%s $ %,.2f",
+                    currency,
+                    installment.rate
+                )
+            }
+        }
+    } else {
+        view.text = view.context.getString(R.string.text_no_apply)
     }
 }
 

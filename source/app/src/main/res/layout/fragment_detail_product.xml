@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
                     android:contentDescription="@null"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     app:imageUrl="@{product.thumbnail ?? ``}" />
 
 
@@ -81,6 +81,7 @@
                 android:layout_gravity="end"
                 android:text="$ 2.000.000.00"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:currency="@{product.currencyId}"
                 app:amount="@{product.price}" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -105,7 +106,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
@@ -202,30 +202,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_sm">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/padding_sm"
-                        android:text="País:"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -249,7 +225,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
@@ -280,7 +255,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="@{`0`}"
+                        app:currency="@{product.currencyId}"
+                        app:pay="@{product.installments}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -304,7 +280,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="@{`0`}"
+                        app:currency="@{product.currencyId}"
+                        app:rate="@{product.installments}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -339,7 +316,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="@{product.condition}"
+                        app:condition="@{product.condition}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -394,8 +371,10 @@
                         android:ellipsize="end"
                         android:focusable="true"
                         android:maxLines="1"
+                        android:textColor="#7A9DDD"
+                        android:gravity="end"
                         android:onClick="@{onClickListener}"
-                        android:text="@{product.permalink}"
+                        android:text="Ir a Mercado Libre"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/text_more_info"
