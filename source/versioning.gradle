@@ -1,0 +1,24 @@
+ext {
+    versionMajor = 1
+    versionMinor = 0
+    versionPatch = 0
+    versionBuild = 1
+
+    generateVersionName = { ->
+        return "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+
+    generateVersionNameSuffix = { sf ->
+        if (versionBuild < 10)
+            return "-${sf}0${versionBuild}"
+        else
+            return "-${sf}${versionBuild}"
+    }
+
+    //example 1000010 => 1.0.1
+    generateVersionCode = { ->
+         return versionMajor * 1000000 +
+                versionMinor *   10000 +
+                versionPatch *      10
+    }
+}

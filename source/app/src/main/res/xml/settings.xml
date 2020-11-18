@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="Tema">
+    <SwitchPreference
+        app:key="dark_mode"
+        android:icon="@drawable/ic_baseline_settings_brightness_24"
+        app:title="@string/text_title_dark_mode"
+        app:summary="@string/text_summary_dark_mode"
+        />
+    </PreferenceCategory>
+</PreferenceScreen>
