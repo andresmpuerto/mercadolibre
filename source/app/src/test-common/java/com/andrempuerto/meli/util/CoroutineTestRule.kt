@@ -1,5 +1,6 @@
-package com.andrempuerto.meli.utils
+package com.andrempuerto.meli.util
 
+import com.andrempuerto.meli.utils.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

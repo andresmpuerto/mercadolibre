@@ -22,4 +22,5 @@
     <string name="text_condition_new">Nuevo</string>
     <string name="text_condition_used">Usado</string>
     <string name="text_no_apply">NA</string>
+    <string name="text_retry_btn">Reintentar</string>
 </resources>
