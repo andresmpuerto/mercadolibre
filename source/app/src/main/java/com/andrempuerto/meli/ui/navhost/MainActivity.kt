@@ -1,55 +1,89 @@
 package com.andrempuerto.meli.ui.navhost
 
 import android.os.Bundle
-import android.view.Menu
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
+import com.andrempuerto.meli.BuildConfig
 import com.andrempuerto.meli.R
+import com.andrempuerto.meli.databinding.ActivityMainBinding
+import com.andrempuerto.meli.ui.settings.SettingsFragment.Companion.PREFERENCE_DARK_MODE
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
+        navController = findNavController(R.id.nav_host_fragment)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        setNavigation()
+        PreferenceManager.getDefaultSharedPreferences(this).also {preference ->
+            if (preference.getBoolean(PREFERENCE_DARK_MODE, false)) {
+                updateTheme(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                updateTheme(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-        ), drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+
+        binding.version = BuildConfig.VERSION_NAME
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            supportActionBar?.title = destination.label
+            when (destination.id) {
+                R.id.nav_home -> {
+                    supportActionBar?.apply {
+                        setDisplayShowHomeEnabled(false)
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
+
+                R.id.view_list_products -> {
+                    supportActionBar?.apply {
+                        setDisplayShowHomeEnabled(true)
+                        setDisplayHomeAsUpEnabled(true)
+                    }
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                }
+            }
+        }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+    private fun updateTheme(nightMode: Int): Boolean {
+        AppCompatDelegate.setDefaultNightMode(nightMode)
         return true
     }
 
+    private fun setNavigation() {
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.view_list_products,
+                R.id.nav_settings
+            ),
+            binding.drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

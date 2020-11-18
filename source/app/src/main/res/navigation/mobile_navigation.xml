@@ -9,21 +9,44 @@
         android:id="@+id/nav_home"
         android:name="com.andrempuerto.meli.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_to_list_products"
+            app:destination="@id/view_list_products" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.andrempuerto.meli.ui.product.search.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_detail_product" />
+        android:id="@+id/view_detail_product"
+        android:label="Detalle Producto"
+        android:name="com.andrempuerto.meli.ui.product.detail.DetailProductFragment"
+        tools:layout="@layout/fragment_detail_product" >
+        <argument
+            android:name="product"
+            app:argType="com.andrempuerto.meli.model.Product"
+            />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.andrempuerto.meli.ui.recentsearch.RecentSearchFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/view_list_products"
+        android:label="Listado Productos"
+        android:name="com.andrempuerto.meli.ui.product.search.SearchProductFragment"
+        tools:layout="@layout/fragment_search_product" >
+        <action
+            android:id="@+id/action_to_detail"
+            app:destination="@id/view_detail_product" />
+        <action
+            android:id="@+id/action_to_recent"
+            app:destination="@id/view_recent" />
+    </fragment>
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.andrempuerto.meli.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Configuración" />
+
+    <fragment
+        android:id="@+id/view_recent"
+
+        android:name="com.andrempuerto.meli.ui.recentsearch.RecentSearchFragment"
+        android:label="Consultas Recientes"
+        tools:layout="@layout/fragment_recent_list"/>
 </navigation>
