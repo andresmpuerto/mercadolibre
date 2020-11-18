@@ -50,9 +50,10 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
+            //debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //            if (!credentialsProperties['storePassword'].toString().isEmpty()) {
-//                signingConfig signingConfigs.release
+           // signingConfig signingConfigs.release
 //            }
         }
     }
@@ -68,6 +69,8 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/androidx.hilt_hilt-common.version'
+        exclude 'META-INF/androidx.preference_preference.version'
         exclude("META-INF/*.kotlin_module")
     }
 

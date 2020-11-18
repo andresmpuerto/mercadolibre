@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
     SearchView.OnQueryTextListener {
 
-    private val productViewModel by viewModels<ProductViewModel>()
+    val productViewModel by viewModels<ProductViewModel>()
 
     private lateinit var adapter: ProductsAdapter
 
@@ -43,6 +43,7 @@ class SearchProductFragment : BaseFragment<FragmentSearchProductBinding>(),
                 setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
                 setOnQueryTextListener(this@SearchProductFragment)
             }
+            binding.textError.text = "Busca un producto"
         }
 
         productViewModel.products.observe(viewLifecycleOwner) {

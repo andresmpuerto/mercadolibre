@@ -1,30 +1,25 @@
 package com.andrempuerto.meli.module
 
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
+import com.andrempuerto.meli.data.ProductsPagingSource
 import com.andrempuerto.meli.data.source.local.CountryPreference
 import com.andrempuerto.meli.repository.CountrySiteRepository
 import com.andrempuerto.meli.repository.ProductsRepository
 import com.andrempuerto.meli.ui.product.ProductViewModel
 import com.andrempuerto.meli.util.CoroutineTestRule
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-
 @RunWith(JUnit4::class)
-//@HiltAndroidTest
 @ExperimentalCoroutinesApi
 class SearchProductTest {
-
-//    @get:Rule
-//    var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     var coroutinesTestRule = CoroutineTestRule()
@@ -39,13 +34,12 @@ class SearchProductTest {
 
     @Before
     fun initTest() {
-        // hiltRule.inject()
         MockKAnnotations.init(this, relaxUnitFun = true)
     }
 
     @After
     fun finishTest() {
-        // unmockkAll()
+        unmockkAll()
     }
 
     @Test
@@ -59,13 +53,20 @@ class SearchProductTest {
     @Test
     fun validateSearchProductByQueryTest() {
         every { siteRepository.siteIdFlow } returns flow { emit(CountryPreference(siteId = "MCO")) }
+        val pagingConfig: PagingConfig = mockk()
+        val pagingSource: ProductsPagingSource = mockk()
+
+        val pager = Pager(
+            config = pagingConfig,
+            pagingSourceFactory = { pagingSource }
+        )
+        coEvery { repository.getSearchProducts(any(), any()) } returns pager.liveData //PagingData<Product>
+
         viewModel = ProductViewModel(repository, siteRepository)
 
-        coEvery { repository.getSearchProducts(any(), any()) } returns MutableLiveData()
+        viewModel.setQuery("android")
+        Assert.assertEquals(viewModel._query.value, "android")
 
-        viewModel.setQuery("MCO")
-
-        //Assert.assertEquals(viewModel.products,  repository.getSearchProducts(any(), any()).emit() }
+        Assert.assertEquals(viewModel.products.value, pager)
     }
-
 }

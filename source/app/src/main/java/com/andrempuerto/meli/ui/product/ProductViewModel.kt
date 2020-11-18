@@ -19,7 +19,7 @@ constructor(
     private val countrySiteRepository: CountrySiteRepository
 ) : ViewModel() {
 
-    private val _query = MutableLiveData<String>()
+    val _query = MutableLiveData<String>()
 
     private val _product = MutableLiveData<Product>()
     val product: LiveData<Product> = _product
@@ -30,7 +30,7 @@ constructor(
             repository.getSearchProducts(it, siteId).cachedIn(viewModelScope)
     }
 
-    private var siteId = ""
+    var siteId = ""
 
     init {
         val dispatcher = DefaultDispatcherProvider()
