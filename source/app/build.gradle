@@ -50,9 +50,10 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
+            //debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //            if (!credentialsProperties['storePassword'].toString().isEmpty()) {
-//                signingConfig signingConfigs.release
+           // signingConfig signingConfigs.release
 //            }
         }
     }
@@ -68,6 +69,8 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/androidx.hilt_hilt-common.version'
+        exclude 'META-INF/androidx.preference_preference.version'
         exclude("META-INF/*.kotlin_module")
     }
 
@@ -126,29 +129,29 @@ dependencies {
 
     //Test
     def junitVersion = '4.13.1'
-    def testExtJunit = '1.1.2'
-    def espressoVersion = '3.4.0-alpha02'
-    def daggerHiltVersion = '2.29.1-alpha'
-    def androidXTest = '1.2.0'
-
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
-
     testImplementation "junit:junit:$junitVersion"
+
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     def fragmentVersion = "1.2.5"
     debugImplementation("androidx.fragment:fragment-testing:$fragmentVersion") {
         exclude group:'androidx.test', module:'monitor'
     }
 
+    def espressoVersion = '3.4.0-alpha02'
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
 
+    def testExtJunit = '1.1.2'
     androidTestImplementation "androidx.test.ext:junit:$testExtJunit"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$testExtJunit"
     androidTestImplementation "com.google.truth:truth:1.0"
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
+
+    def androidXTest = '1.2.0'
     androidTestImplementation "androidx.test:core:$androidXTest"
+    androidTestImplementation "androidx.test:core-ktx:$androidXTest"
     androidTestImplementation "androidx.test:runner:$androidXTest"
     androidTestImplementation "androidx.test:rules:$androidXTest"
     androidTestImplementation "androidx.test.ext:truth:$androidXTest"
@@ -161,15 +164,19 @@ dependencies {
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoIdleVersion"
 
     //Test - Mockk
-    testImplementation "io.mockk:mockk:1.10.2"
-    androidTestImplementation "io.mockk:mockk-android:1.10.2"
+    def mockkVersion = "1.10.2"
+    testImplementation "io.mockk:mockk:$mockkVersion"
+    androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
 
 
     //Dagger Hilt
-    def daggerHiltXVersion = '1.0.0-alpha02'
+    def daggerHiltVersion = '2.29.1-alpha'
     implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
 
+    def daggerHiltXVersion = '1.0.0-alpha02'
     implementation "androidx.hilt:hilt-common:$daggerHiltXVersion"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$daggerHiltXVersion"
     kapt "androidx.hilt:hilt-compiler:$daggerHiltXVersion"

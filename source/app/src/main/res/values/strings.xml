@@ -25,5 +25,8 @@
     <string name="text_format_ars" translatable="false">%1$s $ %.,2f</string>
     <string name="text_empty" translatable="false"/>
     <string name="text_no_apply">NA</string>
+    <string name="text_retry_btn">Reintentar</string>
+    <string name="text_building">Disculpa las molestias estamos mejorando para ti.
+        En construcción</string>
 
 </resources>
