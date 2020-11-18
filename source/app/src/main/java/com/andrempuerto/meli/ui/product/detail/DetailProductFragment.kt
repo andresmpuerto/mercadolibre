@@ -1,33 +1,46 @@
 package com.andrempuerto.meli.ui.product.detail
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.andrempuerto.meli.R
+import com.andrempuerto.meli.databinding.FragmentDetailProductBinding
+import com.andrempuerto.meli.ui.BaseFragment
 import com.andrempuerto.meli.ui.product.ProductViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class DetailProductFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = DetailProductFragment()
+@AndroidEntryPoint
+class DetailProductFragment : BaseFragment<FragmentDetailProductBinding>(), View.OnClickListener {
+
+    private val viewModel by viewModels<ProductViewModel>()
+
+    val detail : DetailProductFragmentArgs by navArgs()
+
+    override fun getViewDataBinding(inflater: LayoutInflater)
+            = FragmentDetailProductBinding.inflate(inflater)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.product = detail.product
+        binding.onClickListener = this
+        binding.executePendingBindings()
     }
 
-    private lateinit var viewModel: ProductViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_detail_product, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.urlMeli -> {
+                val uri = Uri.parse(detail.product.permalink)
+                Intent(Intent.ACTION_VIEW, uri).also {
+                    startActivity(it)
+                }
+            }
+        }
     }
 
 }

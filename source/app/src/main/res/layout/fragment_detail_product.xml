@@ -2,6 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="product"
+            type="com.andrempuerto.meli.model.Product" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,7 +21,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="320dp"
             android:fitsSystemWindows="true"
             android:theme="@style/Theme.SearchProducts.AppBarOverlay">
 
@@ -33,10 +44,10 @@
                 <ImageView
                     android:id="@+id/imgProduct"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="220dp"
                     android:contentDescription="@null"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/ic_launcher" />
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{product.thumbnail ?? ``}" />
 
 
                 <com.google.android.material.textview.MaterialTextView
@@ -45,9 +56,10 @@
                     android:layout_gravity="bottom"
                     android:layout_marginStart="@dimen/margin_sm"
                     android:layout_marginBottom="@dimen/margin_sm"
-                    android:text="Product Example"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:textColor="@color/white" />
+                    android:paddingHorizontal="@dimen/padding_sm"
+                    android:paddingTop="@dimen/padding_sm"
+                    android:text="@{product.name ?? ``}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -56,17 +68,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_md"
                 android:orientation="vertical">
 
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_sm"
+                android:layout_gravity="end"
+                android:text="$ 2.000.000.00"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:currency="@{product.currencyId}"
+                app:amount="@{product.price}" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_atributes"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Atributos"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -80,18 +101,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Marca:"
+                        android:text="@{product.attributes.get(0).name}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        android:text="@{product.attributes.get(0).valueName}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Marca:"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -116,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        android:text=""
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -126,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sm"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Localización"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -151,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        android:text="@{product.address.cityName}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -176,31 +196,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_sm">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/padding_sm"
-                        android:text="País:"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        android:text="@{product.address.stateName}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -210,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sm"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_payment"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Pago"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -230,12 +226,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        app:payments="@{product.installments}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -260,7 +255,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        app:currency="@{product.currencyId}"
+                        app:pay="@{product.installments}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -284,7 +280,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        app:currency="@{product.currencyId}"
+                        app:rate="@{product.installments}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -294,7 +291,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_sm"
-                    android:drawableStart="@drawable/ic_menu_camera"
+                    android:drawableStart="@drawable/ic_more"
                     android:drawablePadding="@dimen/padding_sm"
                     android:text="Adicionales"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -319,7 +316,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        app:condition="@{product.condition}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -344,7 +341,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        android:text="@{safeUnbox(product.shipping.freeShipping) ? @string/text_yes_mp : @string/text_no_mp}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -356,21 +353,31 @@
                     android:layout_marginTop="@dimen/margin_sm">
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_more_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/padding_sm"
-                        android:text="Marca:"
+                        android:text="Más info:"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/urlMeli"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/padding_sm"
-                        android:text="Motorola"
+                        android:layout_marginStart="@dimen/margin_sm"
+                        android:clickable="true"
+                        android:ellipsize="end"
+                        android:focusable="true"
+                        android:maxLines="1"
+                        android:textColor="#7A9DDD"
+                        android:gravity="end"
+                        android:onClick="@{onClickListener}"
+                        android:text="Ir a Mercado Libre"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/text_more_info"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
